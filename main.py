@@ -1,4 +1,7 @@
+#!/usr/bin/python3
 import os
+import tkinter as tk
+from tkinter import ttk
 from shutil import copyfile
 
 def translate_character(name):
@@ -19,6 +22,13 @@ def translate_character(name):
             "99": os.path.join("15","c15_00.nif.bak"),# Orange Sheep
             }
     return characters[name]
+
+def translate_block_textures(name):
+    pass
+    # Original
+    # Rapunzel
+    # Babel
+    # Debug
 
 def character_prompt(character_path,player):
     char = 0
@@ -74,9 +84,117 @@ def main():
     copyfile(p2_path,p2_play)
     input("Finished")
 
+def set_constant_frame(constant_frame):
+    config_frame = tk.Frame(constant_frame)
+
+    # General Config (Steam Path)
+    library_path_entry = tk.Entry(config_frame,width=50)
+    library_path_label = tk.Label(config_frame,text="Steam library path")
+    library_path_label.pack(side='left')
+    library_path_entry.pack(side='left')
+    library_path_entry.insert(0,"C:\Program Files\Steam")
+
+    # buttons
+    button_frame = tk.Frame(constant_frame)
+    undo_button = tk.Button(button_frame,text='Restore Defaults',width=25,height=5)
+    do_button = tk.Button(button_frame,text='Apply Config',width=25,height=5)
+
+    # Packing
+    config_frame.pack(side='top')
+    button_frame.pack(side='bottom')
+    undo_button.pack(side='left')
+    do_button.pack(side='left')
+
+def set_character_tab(parent_frame):
+    players = ["Player 1", "Player 2"]
+    playable_characters = ["Blue Sheep", "Orange Sheep", "Pink Sheep", "Vincent (Boxers)", "Vincent (Shirt)", "The Prince", "Sheep", "Crazy Sheep", "Spear Sheep", "Fat Sheep", "Club Sheep", "Axe Sheep"]
+    config_frame = tk.Frame(parent_frame)
+
+    for player in players:
+        player_frame = tk.Frame(config_frame)
+        tk.Label(player_frame,text=player).pack()
+        for character in playable_characters:
+            tk.Radiobutton(player_frame,indicatoron=0,text=character).pack()
+        player_frame.pack()
+        
+    # packing
+    display_frame = tk.Frame(parent_frame)
+    config_frame.pack(side='left')
+    display_frame.pack(side='right')
+
+
+def set_block_tab(parent_frame):
+    blocks = ["White", "Cracked", "Heavy", "Immovable", "Ice", "Explosive I", "Explosive II", "Mystery", "Spike", "Black Hole", "Monster"]
+    skins_most = ["Original","Rapunzel","Babel","Placeholder"]
+    # not all blocks have a Rapunzel variant
+    skins_some = ["Original","Babel","Placeholder"]
+    config_frame = tk.Frame(parent_frame)
+
+    for block in blocks:
+        block_frame = tk.Frame(config_frame,width=100)
+        tk.Label(block_frame,text=block).pack()
+        skins_to_use = skins_most
+        if "Heavy" in block or "Explosive" in block or "Mystery" in block or "Black" in block:
+            skins_to_use = skins_some
+        for skin in skins_to_use:
+            tk.Radiobutton(block_frame,text=skin,width=3).pack(side='left')
+        block_frame.pack()
+
+    # packing
+    display_frame = tk.Frame(parent_frame)
+    display_frame = tk.Frame(parent_frame)
+    config_frame.pack(side='left')
+    display_frame.pack(side='right')
+
+def set_changing_frame(changing_frame):
+    tabControl = ttk.Notebook(changing_frame)
+    character_tab = ttk.Frame(tabControl)
+    set_character_tab(character_tab)
+    block_tab = ttk.Frame(tabControl)
+    set_block_tab(block_tab)
+    tabControl.add(character_tab, text='Characters')
+    tabControl.add(block_tab, text='Blocks')
+    tabControl.pack(expand=1, fill="both")
+
+def gui():
+    window = tk.Tk()
+    window.title('Catherine Helper')
+    constant_frame = tk.Frame(master=window)
+    changing_frame = tk.Frame(master=window,width=100)
+    set_constant_frame(constant_frame)
+    set_changing_frame(changing_frame)
+
+    constant_frame.pack(side='left')
+    changing_frame.pack(side='right')
+    #init_tabs(window)
+#    label = tk.Label(
+#            text="Hello",
+#            foreground="white",
+#            background="black"
+#            )
+#    do_button = tk.Button(
+#            text='Apply Config',
+#            width=25,
+#            height=5,
+#            )
+#    undo_button = tk.Button(
+#            text='Restore Defaults',
+#            width=25,
+#            height=5,
+#            )
+#    entry = tk.Entry(width=50)
+#    label = tk.Label(entry,text="Steam library path")
+#    entry.pack(side='top')
+#    label.pack(side='left')
+#    entry.insert(0,"C:\Program Files\Steam")
+#    do_button.pack()
+#    undo_button.pack()
+    window.mainloop()
+
 if __name__ == "__main__":
     try:
-        main()
+        #main()
+        gui()
     except Exception as e:
         print(e)
         input("See error message")
