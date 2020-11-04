@@ -128,7 +128,7 @@ def set_character_tab(parent_frame,selected_character):
         tk.Label(player_frame,text=player).pack()
         variable = tk.StringVar(player_frame)
         selected_character[player] = variable
-        variable.set(playable_characters[0])
+        variable.set(playable_characters[1] if player == 'Player 2' else playable_characters[0])
         tk.OptionMenu(player_frame,variable,*playable_characters).pack()
         player_frame.pack()
         
