@@ -150,7 +150,7 @@ def set_block_tab(parent_frame,block_select):
         block_frame = tk.Frame(config_frame)
         tk.Label(block_frame,text=block).pack()
         skins_to_use = skins_most
-        if "Heavy" in block or "Explosive" in block or "Mystery" in block or "Black" in block:
+        if "Heavy" in block or "Explosive" in block or "Mystery" in block or "Spike" in block or "Monster" in block:
             skins_to_use = skins_some
         variable = tk.StringVar(block_frame)
         block_select[block] = variable
